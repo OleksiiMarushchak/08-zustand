@@ -1,28 +1,43 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 
-import Header from "@/components/Header/Header";
+import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import './globals.css';
 
+import Header from '@/components/Header/Header';
 
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 
-import Footer from "@/components/Footer/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"], 
-});
+import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
-  title: "NoteApp",
-  description: "Create by Oleksii(th1rd)Marushchak",
+  title: 'NoteHub',
+  description:
+    'A modern platform for creating, organizing, and sharing notes in one place.',
+  metadataBase: new URL('https://08-zustand-nine-omega.vercel.app/'),
+  openGraph: {
+    title: `NoteHub`,
+    description:
+      'A modern platform for creating, organizing, and sharing notes in one place.',
+    url: `https://08-zustand-nine-omega.vercel.app/`,
+    images: [
+      {
+        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'NoteHub',
+      },
+    ],
+    type: 'article',
+  },
 };
+
+const roboto = Roboto({
+  subsets: ['latin'], 
+  weight: ['400', '700'],
+  variable: '--font-roboto', 
+  display: 'swap', 
+});
+
 
 export default function RootLayout({
   children,
@@ -30,7 +45,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${roboto.variable}`}>
         <TanStackProvider>
           <Header />
           <main>

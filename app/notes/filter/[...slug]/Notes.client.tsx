@@ -66,12 +66,12 @@ export default function NotesClient({ tag }: NotesClientProps) {
           />
         )}
 
-        <button
+        <a
           className={styles.button}
-          onClick={() => setIsModalOpen(true)}
+          href="/notes/action/create"
         >
           Create note +
-        </button>
+        </a>
       </header>
 
       {isLoading && <p>Loading...</p>}
@@ -79,11 +79,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
 
       {notes.length > 0 && <NoteList notes={notes} />}
 
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <NoteForm onCancel={() => setIsModalOpen(false)} />
-        </Modal>
-      )}
+      {/* Modal logic removed, now handled by create page */}
     </div>
   );
 }

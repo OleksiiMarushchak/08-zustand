@@ -65,3 +65,17 @@ export async function fetchNoteById(id: string): Promise<Note> {
     await api.get(`/notes/${id}`);  
   return response.data;
 }
+
+
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const getCategories = async () => {
+  const res = await axios<Category[]>('/categories');
+  return res.data;
+};
