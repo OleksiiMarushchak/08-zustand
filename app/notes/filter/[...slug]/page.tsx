@@ -4,13 +4,12 @@ import NotesClient from "./Notes.client";
 import { Metadata } from "next";
 
 
+
 type Props = {
-  params: {
-    slug: string[]
-  }
+  params: { slug: string[] }
 }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = params;
   const id = slug?.[0] === "all" ? undefined : slug?.[0];
   return {
     title: `Filtered Notes: ${id}`,
@@ -30,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
       type: 'article',
     },
-  }
+  };
 }
 
 
@@ -40,23 +39,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug?: string[] }>;
-}) {
-  const { slug } = await params;
-
-  const tag =
-    slug?.[0] === "all" ? undefined : slug?.[0];
-
+export default async function Page({ params }: Props) {
+  const { slug } = params;
+  const tag = slug?.[0] === "all" ? undefined : slug?.[0];
   const queryClient = new QueryClient();
-
   await queryClient.prefetchQuery({
     queryKey: ["notes", "", 1, tag],
     queryFn: () => fetchNotes("", 1, 12, tag),
   });
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <NotesClient tag={tag} />

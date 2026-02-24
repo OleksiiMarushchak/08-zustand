@@ -7,11 +7,11 @@ import { useDebouncedCallback } from "use-debounce";
 import styles from "./NotesPage.module.css";
 import { fetchNotes } from "@/lib/api";
 
-import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import SearchBox from "@/components/SearchBox/SearchBox";
+import Link from "next/link";
 
 interface NotesClientProps {
   tag?: string;
@@ -21,7 +21,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 👉 ВАЖНО: при смене tag сбрасываем страницу
   useEffect(() => {
@@ -66,20 +65,18 @@ export default function NotesClient({ tag }: NotesClientProps) {
           />
         )}
 
-        <a
+        <Link
           className={styles.button}
           href="/notes/action/create"
         >
           Create note +
-        </a>
+        </Link>
       </header>
 
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error loading notes</p>}
 
       {notes.length > 0 && <NoteList notes={notes} />}
-
-      {/* Modal logic removed, now handled by create page */}
     </div>
   );
 }

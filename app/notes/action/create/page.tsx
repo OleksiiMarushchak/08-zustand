@@ -1,20 +1,21 @@
 // app/notes/action/create/page.tsx
 
 
-import NoteForm from '@/components/NoteForm/NoteForm';
+import { getCategories } from '@/lib/api';
 import css from './CreateNote.module.css';
+import NoteForm from '@/components/NoteForm/NoteForm';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Create note',
   description: 'Create a new note or save a draft.',
-  url: '/notes/action/create',
   openGraph: {
     title: 'Create note',
     description: 'Create a new note or save a draft.',
-    url: '/notes/action/create',
+    url: 'https://08-zustand-nine-omega.vercel.app/notes/action/create',
     images: [
       {
-        url: '/og-create-note.png',
+        url: 'https://08-zustand-nine-omega.vercel.app/og-create-note.png',
         width: 1200,
         height: 630,
         alt: 'Create note',
