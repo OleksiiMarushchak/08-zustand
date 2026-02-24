@@ -2,37 +2,42 @@
 // ...existing code...
 
 import styles from './NoteForm.module.css';
-import { useDraftStore } from '@/lib/draftStore';
+import { useNoteStore, initialDraft } from '@/lib/store/noteStore';
 import { createNote } from '@/lib/api';
 import type { NoteFormValues } from '../../types/note';
+import { useRouter } from 'next/navigation';
 
 export default function NoteForm() {
-  const { draft, setDraft, clearDraft } = useDraftStore();
+  const router = useRouter();
+  const { draft, setDraft, clearDraft } = useNoteStore();
 
-  async function formAction(formData: FormData) {
-    const values: NoteFormValues = {
-      title: formData.get('title') as string,
-      content: formData.get('content') as string,
-      tag: formData.get('tag') as NoteFormValues['tag'],
-    };
-    await createNote(values);
+  // Use draft from store or initialDraft
+  const formDraft = draft || initialDraft;
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await createNote(formDraft);
     clearDraft();
-    // Optionally redirect or show success
+    router.back();
   }
 
   function handleDraftChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setDraft({ ...draft, [e.target.name]: e.target.value });
+    setDraft({ ...formDraft, [e.target.name]: e.target.value });
+  }
+
+  function handleCancel() {
+    router.back();
   }
 
   return (
-    <form className={styles.form} action={formAction}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label htmlFor="title">Title</label>
         <input
           id="title"
           name="title"
           className={styles.input}
-          value={draft.title}
+          value={formDraft.title}
           onChange={handleDraftChange}
           minLength={3}
           maxLength={50}
@@ -47,7 +52,7 @@ export default function NoteForm() {
           name="content"
           rows={8}
           className={styles.textarea}
-          value={draft.content}
+          value={formDraft.content}
           onChange={handleDraftChange}
           maxLength={500}
         />
@@ -59,7 +64,7 @@ export default function NoteForm() {
           id="tag"
           name="tag"
           className={styles.select}
-          value={draft.tag}
+          value={formDraft.tag}
           onChange={handleDraftChange}
           required
         >
@@ -75,7 +80,7 @@ export default function NoteForm() {
         <button
           type="button"
           className={styles.cancelButton}
-          onClick={clearDraft}
+          onClick={handleCancel}
         >
           Cancel
         </button>
